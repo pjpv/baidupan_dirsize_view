@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         百度网盘获取文件夹信息
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/pjpv/baidupan_dirsize_view
 // @version      0.1
 // @description  在百度网盘管理显示文件夹的详细信息（占用空间、子目录数量，文件数量），并文件夹和文件在当前目录所占空间的百分比。
-// @author       greendev
+// @author       pjpv
 // @match        https://pan.baidu.com/disk/home
 // @grant        none
 // ==/UserScript==
