@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         百度网盘获取文件详情
-// @namespace    https://github.com/pjpv/baidupan_dirsize_view
+// @name         百度网盘获取文件夹信息
+// @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  在百度网盘管理显示文件夹的详细信息（占用空间、子目录数量，文件数量），并文件夹和文件在当前目录所占空间的百分比。
-// @author       pjpv
+// @author       greendev
 // @match        https://pan.baidu.com/disk/home
 // @grant        none
 // ==/UserScript==
@@ -255,17 +255,80 @@
     addGlobalStyle('.progress-bar{height: 40%;float: left;display: flex;text-shadow: 0 -1px 0 rgba(0,0,0,0.25);background-color: #3b8cff;background-image: linear-gradient(to bottom,#149bdf,#0480be);background-repeat: repeat-x;box-shadow: inset 0 -1px 0 rgba(0,0,0,0.15);box-sizing: border-box;transition: width 0.6s ease;border-radius: inherit;text-shadow: 0 1px 0 rgba(0, 0, 0, 1);line-height: 170%;font-size: 12px;left: 0;color: #f3f3f3;font-weight: 900;}'+
                    '.file-info{float:left;position:inherit;display:block;text-shadow:0-1px0rgba(0,0,0,0.25);width: 100%; line-height: 170%;}');
 
-
+    /**
+    * 获取文件详细信息按钮 - 添加
+    */
     function addButton(){
         var $get_dir_size_button = $('<a class="g-button"href="javascript:;" title="获取文件详情" style="display: inline-block;"><span class="g-button-right"><em class="icon icon-disk" title="获取文件详情"></em><span class="text" style="width: auto;">获取文件详情</span></span></a>');
         $get_dir_size_button.click (getDirSize);
         // 按钮放在在新建文件夹后面
         $('.tcuLAu a[title="新建文件夹"]').after($get_dir_size_button);
+
+        $('.OFaPaO').css({'z-index':'999'});// 别挡到搜索框了
     }
+
+
+    /**
+    * 搜索栏添加及时文件筛选功能
+    */
+    function filterFile(){
+        // NEW selector
+        jQuery.expr[':'].Contains = function(a, i, m){
+            return jQuery(a).text().toUpperCase()
+                .indexOf(m[3].toUpperCase()) >= 0;
+            //return jQuery(a).textContent.toUpperCase()
+            //    .indexOf(m[3].toUpperCase()) >= 0;
+        };
+
+        var select_dd = false;
+
+        function filter(text){
+            if(text.replace('/ /')===''){
+                var all_ccount = $('.zJMtAEb .NHcGw .vdAfKMb dd').show().length;
+                $('#layoutMain div.JDeHdxb > span.FcucHsb').text("已全部加载，共" + all_ccount + "个");
+                select_dd = false;
+            }else{
+                $('.zJMtAEb .NHcGw .vdAfKMb dd').hide();
+                //var $dd_checked= $('.zJMtAEb .NHcGw .vdAfKMb dd:Contains("'+text+'")').show();
+                var filter_count = $('.zJMtAEb .NHcGw .vdAfKMb dd:has(.file-name > .text:Contains("'+text+'"))').show().length;
+                $('#layoutMain div.JDeHdxb > span.FcucHsb').text("已筛选，共" + filter_count + "个");
+                select_dd = true;
+            }
+        }
+
+        var t = new Date();
+        $('.DxdbeCb .xcldrR3R .OFaPaO .dwnbqMM .duxq7e0Z .bf7o0Y').bind('input propertychange blur', function(e) {
+            var text = e.target.value;
+            var tmp_t = new Date();
+            t = tmp_t;
+            setTimeout(function(){
+                if(t == tmp_t){
+                    console.log('搜索',text);
+                    filter(text);
+                }
+            },500);
+
+        }).bind('change', function(e) {
+            /**
+            * 确认输入值后（离开搜索框），判断是否选择行
+            */
+            var text = e.target.value;
+            if(select_dd){
+                // 选择
+                $('.zJMtAEb .NHcGw .vdAfKMb dd:Contains("'+text+'")').find('.EOGexf').click();
+
+            }
+        });
+
+    }
+
+
 
     // 添加按钮
     addButton();
 
+    // 添加筛选功能
+    filterFile();
 
 
 
