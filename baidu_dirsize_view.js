@@ -5,6 +5,7 @@
 // @description  在百度网盘管理显示文件夹的详细信息（占用空间、子目录数量，文件数量），并文件夹和文件在当前目录所占空间的百分比。
 // @author       pjpv
 // @match        https://pan.baidu.com/disk/home
+// @updateURL	https://raw.githubusercontent.com/pjpv/baidupan_dirsize_view/master/baidu_dirsize_view.js
 // @grant        none
 // ==/UserScript==
 
