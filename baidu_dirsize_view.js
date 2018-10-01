@@ -410,7 +410,7 @@
     * 获取文件详细信息按钮 - 添加
     */
 	function addButton() {
-		var $get_dir_size_button = $('<a class="g-button g-button-file-detail"href="javascript:;" title="获取文件详情" style="display: inline-block;"><span class="g-button-right"><em class="icon icon-disk" title="获取文件详情"></em><span class="text" style="width: auto;">获取文件详情</span></span></a>');
+		var $get_dir_size_button = $('<a class="g-button g-button-file-detail"href="javascript:;" title="获取文件详情" style="display: inline-block;"><span class="g-button-right"><em class="icon icon-beauty" title="获取文件详情"></em><span class="text" style="width: auto;">获取文件详情</span></span></a>');
 		$get_dir_size_button.click(getDirSize);
 		// 按钮放在在新建文件夹后面
 		$('.tcuLAu a[title="新建文件夹"]').after($get_dir_size_button);
